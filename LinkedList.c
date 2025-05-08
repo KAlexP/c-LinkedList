@@ -1,11 +1,11 @@
-#include "myLinkedList.h"
+#include "LinkedList.h"
 
 /****************************************************************************
  *	Function Title: insrt_in_ord_lst()
  *
  *	Input: list, which points to the front of the linked list
  *		   new_node, which points to the new node that is being added
- *	Output:a struct node pointer, which points to the begining of the linked
+ *	Output:a Node pointer, which points to the begining of the linked
  *	 	   list.
  ****************************************************************************
  *	Pseudocode:
@@ -23,18 +23,18 @@
  *		End
  ***************************************************************************/
 
-struct node *insrt_in_ord_lst(struct node *first, struct node *new_node){
+Node *insrt_in_ord_lst(Node *first, Node *new_node, CompareFunc compare){
 	//Begin
-	struct node *cur = first, *prev = NULL;
+	Node *cur = first, *prev = NULL;
 		//declare variables
-	if(first == NULL || cur->value > new_node->value){
+	if(first == NULL || compare(&cur->value,&new_node->value) > 0){
 		//if the linked llist is empty or new_node should start
 		new_node->next = first;
 			//set new_node to point to list
 		return new_node;
 			//return the pointer to new node
 	}	//endif
-	while(cur != NULL && cur->value < new_node->value){
+  while(cur!= NULL && compare(&cur->value,&new_node->value) < 0){
 		//loop while * is not NULL and the current value is < new value
 		prev = cur;
 		cur = cur->next;
@@ -51,7 +51,7 @@ struct node *insrt_in_ord_lst(struct node *first, struct node *new_node){
  *	Function Title: make_new_node()
  *
  *	Input: a, which is the integer being stored in the new node
- *	Output:a struct node pointer, which points to the new node
+ *	Output:a Node pointer, which points to the new node
  ****************************************************************************
  *	Pseudocode:
  *		Begin
@@ -67,26 +67,17 @@ struct node *insrt_in_ord_lst(struct node *first, struct node *new_node){
  *		End
  ***************************************************************************/
 
-struct node *make_new_node(double a){
-	//Begin
-	struct node *temp;
-		//declare variables
-	temp = malloc(sizeof(struct node));
-		//allocate memory for the new node
-	if(temp == NULL){
-		//if memory allocate failed
-		printf("Malloc Error in make_new_node");
-			//print error
-		exit(EXIT_FAILURE);
-			//exit program
-	}	//endif
-	temp->next = NULL;
-		//make the new node point to NULL
-	temp->value = a;
-		//save int value into node
-	return temp;
-		//return the pointer to the new node
-}	//End
+Node *make_new_node(double a){				// Bgin
+	Node *temp;													//declare variables
+	temp = malloc(sizeof(Node));		//allocate memory for the new node
+	if(temp == NULL){														//if memory allocate failed
+		printf("Malloc Error in make_new_node");		//print error
+		exit(EXIT_FAILURE);													//exit program
+	}																						//endif
+	temp->next = NULL;													//make the new node point to NULL
+	temp->value = a;														//save int value into node
+	return temp;																//return the pointer to the new node
+}																						//End
 
 /****************************************************************************
  *	Function Title: search_linked_list()
@@ -102,39 +93,29 @@ struct node *make_new_node(double a){
  *				 if number for comparison is found
  *				 	flag is true
  *				 	break from loop
- *				 else if number is not found
- *				 	flag is false
  *				 endif
  *			endloop
  *			return flag
  *		End
  ***************************************************************************/
 
-bool search_linked_list(double a, struct node *first){
-	//Begin
-	bool flag = false;
-	struct node *temp = first;
-		//declare variables
-	for(;temp != NULL; temp = temp->next){
-		//loop through the whole linked list
-		if (a == temp->value){
-			//if number for comparison is found
-			flag = true;
-				//flag is true
-			break;
-				//break from loop
-		} else if (a != temp->value){
-			//else if number is not found
-			flag = false;
-				//flag is false
-		}	//endif
-	}	//endloop
-	return flag;
-		//return flag
-}	//End
+bool search_linked_list(double a, Node *first, CompareFunc compare){//	Begin
+	bool flag = false;																	//		declare variables
+	Node *temp = first;													
+	for(;temp != NULL; temp = temp->next){							//		loop linked list
+		if (compare(&a,&temp->value) == 0){								//			if number found
+      flag = true;																		//				flag is true
+			break;																					//				break from loop
+		}																									//			endif
+	}																										//		endloop
+	return flag;																				//		return flag
+}																											//	End
 
 /****************************************************************************
  *	Function Title: print_out()
+ *	Summary: This function just prints out the contents of the linked list. 
+ *					 In particular this includes the square root, cube root and fourth 
+ *					 root as well. The behavior can be modified. 
  *
  *	Input: first, which points to the front of the linked list
  *		   ARG2 which points to the document being printed to
@@ -150,9 +131,9 @@ bool search_linked_list(double a, struct node *first){
  *		End
  ***************************************************************************/
 
-void print_out(struct node *first, FILE *output){
+void print_out(Node *first, FILE *output){
 	//Begin
-	struct node *temp;
+	Node *temp;
 	double fourth_root;
 		//declare variables
 	for(temp = first;temp != NULL; temp = temp->next){
@@ -185,64 +166,46 @@ void print_out(struct node *first, FILE *output){
  *		End
  ***************************************************************************/
 
-void clear_linked_list(struct node *first){
-	//Begin
-	struct node *temp, *p;
-		//declare variables
-	for (p = first; p != NULL; p = p->next){
-		//loop through whole linked list
-		temp = p;
-			//set temp to p
-		p = p->next;
-			//set p to next node
-		free(temp);
-			//free current node memory
-		if(p == NULL){
-			//if p is NULL
-			break;
-				//leave loop
-		}	//endif
-	}	//endloop
-}	//End
+void clear_linked_list(Node *first){// Begin
+	Node *temp, *p;									 //		declare variables
+	for (p = first; p != NULL; p = p->next){ //		loop through whole linked list
+		temp = p;															 //			set temp to p
+		p = p->next;													 //			set p to next node
+		free(temp);														 //			free current node memory
+		if(p == NULL){												 //			if p is NULL
+			break;															 //				leave loop
+		}																			 //			endif
+	}																				 //		endloop
+}																					//	End
 
-/****************************************************************************
- *	Function Title: pull_input()
+/*******************************************************************************
  *
- *	Input: File pointer that points to document that has input
- *	Output: double that is the number stored on a line
- ****************************************************************************
- *	Pseudocode:
- *		Begin
- *			declare variables
- *			read and save input
- *			if number was saved
- *				return value of saved input
- *			endif
- *			if end of file reached
- *				return -1;
- *			endif
- *			print error if this is ever reached
- *			return -1 so the compiler doesn't complain
- *		End
- ***************************************************************************/
+ * The Below Functions are important for the linked List. They need passed to 
+ * the search_linked_list, and insrt_in_ord_lst functions for them to work.
+ *
+ ******************************************************************************/
 
-double pull_input(FILE *input){
-	double num;
-	int flag = fscanf(input,"%lf",&num);
-		//declare variables
-		//read and save input
-	if(flag == 1){
-		//if number was saved
-		return num;
-			//return value of saved input
-	}	//endif
-	if(feof(input)){
-		//if end of file reached
-		return -1;
-			//return -1;
-	}	//endif
-	printf("Error loop fail: pull_input()");
-		//print error if this is ever reached
-	return -1;
-		//return -1 so the compiler doesn't complain
-}
+
+/*******************************************************************************
+* Function Title: compare_node
+* Summary: This function compares two nodes. Needed for insrt_in_ord_lst.
+*
+* Inputs:
+* 	Node* left: the left side comparison
+* 	Node* right: the right side of the comparison
+* Outputs:
+*
+********************************************************************************
+* Pseudocode
+*   Begin
+*   	
+*   End
+*******************************************************************************/
+int compare_node(const void *a, const void *b){ // Begin
+	double da = *(const double*)a;
+  double db = *(const double*)b; 
+  
+  if(da>db) return 1;
+  else if(da<db) return -1;
+  else return 0;
+}																					 // End
