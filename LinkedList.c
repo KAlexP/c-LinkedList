@@ -22,14 +22,13 @@
  *			return the pointer to list
  *		End
  ***************************************************************************/
-
 Node *insrt_in_ord_lst(Node *first, Node *new_node, CompareFunc compare){
 	Node *cur = first, *prev = NULL;
-	if(first == NULL || compare(&cur->value,&new_node->value) > 0){
+	if(first == NULL || compare(cur->value,new_node->value) > 0){
 		new_node->next = first;
 		return new_node;
 	}
-  while(cur!= NULL && compare(&cur->value,&new_node->value) < 0){
+  while(cur!= NULL && compare(cur->value,new_node->value) < 0){
 		prev = cur;
 		cur = cur->next;
 	}
@@ -57,8 +56,7 @@ Node *insrt_in_ord_lst(Node *first, Node *new_node, CompareFunc compare){
  *			return the pointer to the new node
  *		End
  ***************************************************************************/
-
-Node *make_new_node(double a){				// Bgin
+Node *make_new_node(void *value){				// Bgin
 	Node *temp;													//declare variables
 	temp = malloc(sizeof(Node));		//allocate memory for the new node
 	if(temp == NULL){														//if memory allocate failed
@@ -66,7 +64,7 @@ Node *make_new_node(double a){				// Bgin
 		exit(EXIT_FAILURE);													//exit program
 	}																						//endif
 	temp->next = NULL;													//make the new node point to NULL
-	temp->value = a;														//save int value into node
+	temp->value = value;														//save int value into node
 	return temp;																//return the pointer to the new node
 }																						//End
 
@@ -89,12 +87,11 @@ Node *make_new_node(double a){				// Bgin
  *			return flag
  *		End
  ***************************************************************************/
-
-bool search_linked_list(double a, Node *first, CompareFunc compare){//	Begin
+bool search_linked_list(void *value, Node *first, CompareFunc compare){//	Begin
 	bool flag = false;																	//		declare variables
 	Node *temp = first;													
 	for(;temp != NULL; temp = temp->next){							//		loop linked list
-		if (compare(&a,&temp->value) == 0){								//			if number found
+		if (compare(value,temp->value) == 0){								//			if number found
       flag = true;																		//				flag is true
 			break;																					//				break from loop
 		}																									//			endif
@@ -126,9 +123,7 @@ void print_out(Node *first, FILE *output){
 	Node *temp;
 	double fourth_root;
 	for(temp = first;temp != NULL; temp = temp->next){
-		fourth_root = sqrt(sqrt(temp->value));
-		fprintf(output,"%.0f\t%.3f\t",temp->value,sqrt(temp->value));
-		fprintf(output,"%.3f\t%.3f\n",cbrt(temp->value), fourth_root);
+    // Perform Print of your data type here
 	}
 }	
 
@@ -151,12 +146,12 @@ void print_out(Node *first, FILE *output){
  *			endloop
  *		End
  ***************************************************************************/
-
 void clear_linked_list(Node *first){// Begin
 	Node *temp, *p;									 //		declare variables
 	for (p = first; p != NULL; p = p->next){ //		loop through whole linked list
 		temp = p;															 //			set temp to p
 		p = p->next;													 //			set p to next node
+    free(temp->value);										 //			free current node value ptr
 		free(temp);														 //			free current node memory
 		if(p == NULL){												 //			if p is NULL
 			break;															 //				leave loop
@@ -306,3 +301,17 @@ int compare_string(const void* left, const void* right){
   return retVal;
 }
 
+/*******************************************************************************
+* Function Title: compare_complex
+* Summary:
+*
+* Inputs:
+* Outputs:
+*
+* Compile Instructions:
+********************************************************************************
+* Pseudocode
+*   Begin
+*
+*   End
+*******************************************************************************/

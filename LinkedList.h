@@ -6,13 +6,13 @@
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
+#include <complex.h>
 
 #define read "r"
 #define write "w"
-#define MAX_INPUT 3
 
 typedef struct Node{
-	double value;
+	void* value;
 	struct Node *next;
 } Node;
 
@@ -20,9 +20,9 @@ typedef int (*CompareFunc)(const void *a, const void *b);
 typedef void* (*ParseFunc)(const char *line);
 
 Node *insrt_in_ord_lst(Node *list, Node *new_node, CompareFunc compare);
-Node *make_new_node(double a);
+Node *make_new_node(void *value);
 
-bool search_linked_list(double a, Node *first, CompareFunc compare);
+bool search_linked_list(void *value, Node *first, CompareFunc compare);
 void print_out(Node *first, FILE *ARG2);
 void clear_linked_list(Node *first);
 int compare_char(const void *left, const void *right);
