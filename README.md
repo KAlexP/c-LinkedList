@@ -7,6 +7,11 @@ linked list; one way is to create it using `insrt_in_ord_lst`, which makes it
 an ordered linked list. The other way to create a linked list is using `inst_in_list`, 
 which makes it not sorted. 
 
+This code uses function pointers to make this linked list handle different data 
+types more easily. An important definition in the included header file is 
+the `CompareFunc` type that is simply the function pointer type that is the 
+correct function for comparison.
+
 ## Complexity
 
 Using big O notation for time complexity we find insertion complexity is O(n),
@@ -25,3 +30,28 @@ linked list. You will need one `Node *` type that keeps track of the root node.
 The data is stored in the linked list with type `void *`, which 
 allows the code to be generic and reusable. When you want to input data you 
 need to alloacate memory for your data to pass it to the insert functions.
+
+Below is an example of how to use the liniked list. Additionally there are unit
+tests for the code in the UnitTests directory.
+
+```c
+int main(int argc, char **argv){
+	Node* root,new_node;
+	Node* s_root, s_new_node;
+	int itr;
+	void *data, *s_data;
+	for(itr=0;itr < 22;++itr){
+		data = malloc(sizeof(int));
+		s_data = malloc(sizeof(int));
+		*data = (itr >> 2);
+		*s_data = (itr << 4);
+		new_node = make_new_node(data);
+		s_new_node = make_new_node(s_data);
+		root = insrt_in_list(root,new_node);
+		s_root = insrt_in_ord_lst(s_root, s_new_node, compare_int);
+	}
+	print_out(root,stdout);
+	clear_linked_list(root);
+	return 0;
+}
+```

@@ -20,6 +20,7 @@ typedef int (*CompareFunc)(const void *a, const void *b);
 typedef void* (*ParseFunc)(const char *line);
 
 Node *insrt_in_ord_lst(Node *list, Node *new_node, CompareFunc compare);
+void insrt_in_list(Node *list, Node *new_node);
 Node *make_new_node(void *value);
 
 bool search_linked_list(void *value, Node *first, CompareFunc compare);

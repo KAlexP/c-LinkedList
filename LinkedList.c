@@ -37,6 +37,31 @@ Node *insrt_in_ord_lst(Node *first, Node *new_node, CompareFunc compare){
 	return first;
 }
 
+/*******************************************************************************
+* Function Title: insrt_in_list
+* Summary: this inserts nodes into a linked list without sorting
+*
+* Inputs:
+* 	Node *first: the root node or first node
+* 	Node *new_node: the node to be inserted
+* 	CompareFunc: A function pointer pointing to a compare function 
+* 								--see details below--
+* Outputs: n/a 
+********************************************************************************
+* Pseudocode
+*   Begin
+*			find end of list 
+*			put new_node at the end of the list
+*   End
+*******************************************************************************/
+void insrt_in_list(Node *first, Node *new_node){
+  Node *temp = first;
+  while(temp->next != NULL){
+		temp = temp->next;
+  }
+  temp->next = new_node;
+}
+
 /****************************************************************************
  *	Function Title: make_new_node()
  *
