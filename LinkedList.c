@@ -24,28 +24,19 @@
  ***************************************************************************/
 
 Node *insrt_in_ord_lst(Node *first, Node *new_node, CompareFunc compare){
-	//Begin
 	Node *cur = first, *prev = NULL;
-		//declare variables
 	if(first == NULL || compare(&cur->value,&new_node->value) > 0){
-		//if the linked llist is empty or new_node should start
 		new_node->next = first;
-			//set new_node to point to list
 		return new_node;
-			//return the pointer to new node
-	}	//endif
+	}
   while(cur!= NULL && compare(&cur->value,&new_node->value) < 0){
-		//loop while * is not NULL and the current value is < new value
 		prev = cur;
 		cur = cur->next;
-			//advance the temporary pointers down the linked list
-	}	//endloop
+	}
 	prev->next = new_node;
 	new_node->next = cur;
-		//insert node into linked list
 	return first;
-		//return the pointer to list
-}	//End
+}
 
 /****************************************************************************
  *	Function Title: make_new_node()
@@ -132,19 +123,14 @@ bool search_linked_list(double a, Node *first, CompareFunc compare){//	Begin
  ***************************************************************************/
 
 void print_out(Node *first, FILE *output){
-	//Begin
 	Node *temp;
 	double fourth_root;
-		//declare variables
 	for(temp = first;temp != NULL; temp = temp->next){
-		//loop through linked list
 		fourth_root = sqrt(sqrt(temp->value));
-			//find fourth root
 		fprintf(output,"%.0f\t%.3f\t",temp->value,sqrt(temp->value));
 		fprintf(output,"%.3f\t%.3f\n",cbrt(temp->value), fourth_root);
-			//print table of value sqrt cbrt and fourth root
-	}	//endloop
-}	//End
+	}
+}	
 
 /****************************************************************************
  *	Function Title: clear_linked_list()
@@ -178,34 +164,145 @@ void clear_linked_list(Node *first){// Begin
 	}																				 //		endloop
 }																					//	End
 
-/*******************************************************************************
- *
- * The Below Functions are important for the linked List. They need passed to 
- * the search_linked_list, and insrt_in_ord_lst functions for them to work.
- *
- ******************************************************************************/
 
+////////////////////////////////////////////////////////////////////////////////
+//
+// The Below Functions are important for the linked List. They need passed to 
+// the search_linked_list, and insrt_in_ord_lst functions for them to work.
+// 
+///////////////////////////////////////////////////////////////////////////////
 
 /*******************************************************************************
-* Function Title: compare_node
+* Function Title: compare_int
+* Summary: makes comparison for int
+*
+* Inputs:	
+* 	const void* left: the left operand of comparison
+* 	const void* right: the right operand of comparison
+* Outputs:
+* 	int: the result of the comparison
+*******************************************************************************/
+int compare_int(const void* left, const void* right){
+	return *(const int*)left - *(const int*)right;
+}
+
+/*******************************************************************************
+* Function Title: compare_char
+* Summary: this correctly compares characters
+*
+* Inputs:	
+* 	const void* left: the left operand of comparison
+* 	const void* right: the right operand of comparison
+* Outputs:
+* 	int: the result of the comparison
+********************************************************************************
+* Pseudocode
+*   Begin
+*			set variables
+*			if left > right 
+*				return 1
+*			else if left < right
+*				return -1
+*			else 
+*				return 0;
+*   End
+*******************************************************************************/
+int compare_char(const void* left, const void* right){
+	const char c_left = *(const char*) left;
+  const char c_right = *(const char*) right;
+ 	if(c_left > c_right){
+		return 1;
+  } else if (c_left < c_right){
+		return -1;
+  }
+	return 0;
+}
+
+/*******************************************************************************
+* Function Title: compare_float
 * Summary: This function compares two nodes. Needed for insrt_in_ord_lst.
 *
 * Inputs:
 * 	Node* left: the left side comparison
 * 	Node* right: the right side of the comparison
 * Outputs:
-*
+*		int: the results of the comparison
 ********************************************************************************
 * Pseudocode
 *   Begin
-*   	
+*   	assign variables 
+*   	perform comparison 
+*   	return results
 *   End
 *******************************************************************************/
-int compare_node(const void *a, const void *b){ // Begin
-	double da = *(const double*)a;
-  double db = *(const double*)b; 
-  
+int compare_float(const void *left, const void *right){
+	float da = *(const float*)left;
+  float db = *(const float*)right; 
   if(da>db) return 1;
   else if(da<db) return -1;
   else return 0;
-}																					 // End
+}
+
+/*******************************************************************************
+* Function Title: compare_float
+* Summary: This function compares two nodes. Needed for insrt_in_ord_lst.
+*
+* Inputs:
+* 	Node* left: the left side comparison
+* 	Node* right: the right side of the comparison
+* Outputs:
+*		int: the results of the comparison
+********************************************************************************
+* Pseudocode
+*   Begin
+*   	assign variables 
+*   	perform comparison 
+*   	return results
+*   End
+*******************************************************************************/
+int compare_double(const void *left, const void *right){
+	double da = *(const double*)left;
+  double db = *(const double*)right; 
+  if(da>db) return 1;
+  else if(da<db) return -1;
+  else return 0;
+}
+
+/*******************************************************************************
+* Function Title: compare_string
+* Summary: This function compares 
+*
+* Inputs:
+* 	const void* right: the right side of the comparison
+* 	const void* left: the left side of comparison
+* Outputs:
+* 	int: the results of the comparison
+********************************************************************************
+* Pseudocode
+*   Begin
+*			assign variables
+*			loop while right[i] == left[i]
+*				if left > right 
+*					set return 1
+*					break
+*				else if right < left
+*					set return -1
+*				endif 
+*			endloop 
+*   End
+*******************************************************************************/
+
+int compare_string(const void* left, const void* right){
+	int i, retVal = 0;
+  const char * s_right = (const char*) right;
+  const char * s_left = (const char*) left;
+  for(int i = 0; i < strlen(s_right) && i < strlen(s_left); ++i){
+		if(s_left[i] > s_right[i]){
+			retVal = 1;
+    } else if (s_left[i] < s_right[i]){
+			retVal = -1;
+    }
+  }
+  return retVal;
+}
+

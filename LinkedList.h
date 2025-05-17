@@ -25,6 +25,10 @@ Node *make_new_node(double a);
 bool search_linked_list(double a, Node *first, CompareFunc compare);
 void print_out(Node *first, FILE *ARG2);
 void clear_linked_list(Node *first);
-int compare_node(const void *left, const void *right);
+int compare_char(const void *left, const void *right);
+int compare_int(const void *left, const void *right);
+int compare_float(const void *left, const void *right);
+int compare_double(const void *left, const void *right);
+int compare_string(const void *left, const void *right);
 
 #endif /* myLinkedList_h */
