@@ -43,11 +43,11 @@ int main(int argc, char **argv){
 	for(itr=0;itr < 22;++itr){
 		data = malloc(sizeof(int));
 		s_data = malloc(sizeof(int));
-		*data = (itr >> 2);
-		*s_data = (itr << 4);
+		*(int *)data = (itr >> 2);
+		*(int *)s_data = (itr << 4);
 		new_node = make_new_node(data);
 		s_new_node = make_new_node(s_data);
-		root = insrt_in_list(root,new_node);
+		insrt_in_list(root,new_node);
 		s_root = insrt_in_ord_lst(s_root, s_new_node, compare_int);
 	}
 	print_out(root,stdout);
