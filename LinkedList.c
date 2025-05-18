@@ -1,4 +1,5 @@
 #include "LinkedList.h"
+#include <stdlib.h>
 
 /****************************************************************************
  *	Function Title: insrt_in_ord_lst()
@@ -54,17 +55,18 @@ Node *insrt_in_ord_lst(Node *first, Node *new_node, CompareFunc compare){
 *			put new_node at the end of the list
 *   End
 *******************************************************************************/
-void insrt_in_list(Node *first, Node *new_node){
-  Node *temp = first;
+Node *insrt_in_list(Node *first, Node *new_node){
+  Node *cur = first, *prev = NULL;
   if(first == NULL){
-		first = new_node;
-    return;
-  } else if(temp != NULL){
-  	while(temp != NULL && temp->next != NULL){
-    	temp = temp->next;
-  	}
-  	temp->next = new_node;
+    return new_node;
+  } 
+  while(cur != NULL){
+    prev = cur;
+   	cur = cur->next;
   }
+  prev->next = new_node;
+  new_node->next = cur;
+  return first;
 }
 
 /****************************************************************************
@@ -151,9 +153,9 @@ bool search_linked_list(void *value, Node *first, CompareFunc compare){//	Begin
 
 void print_out(Node *first, FILE *output){
 	Node *temp;
-	double fourth_root;
 	for(temp = first;temp != NULL; temp = temp->next){
     // Perform Print of your data type here
+    printf("data: %15d\tnext: %p\n",*(int *)temp->value,temp->next);
 	}
 }	
 
@@ -321,7 +323,7 @@ int compare_string(const void* left, const void* right){
 	int i, retVal = 0;
   const char * s_right = (const char*) right;
   const char * s_left = (const char*) left;
-  for(int i = 0; i < strlen(s_right) && i < strlen(s_left); ++i){
+  for(i = 0; i < strlen(s_right) && i < strlen(s_left); ++i){
 		if(s_left[i] > s_right[i]){
 			retVal = 1;
     } else if (s_left[i] < s_right[i]){
