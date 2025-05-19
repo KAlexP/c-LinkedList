@@ -132,34 +132,6 @@ bool search_linked_list(void *value, Node *first, CompareFunc compare){//	Begin
 }																											//	End
 
 /****************************************************************************
- *	Function Title: print_out()
- *	Summary: This function just prints out the contents of the linked list. 
- *					 In particular this includes the square root, cube root and fourth 
- *					 root as well. The behavior can be modified. 
- *
- *	Input: first, which points to the front of the linked list
- *		   ARG2 which points to the document being printed to
- *	Output:none
- ****************************************************************************
- *	Pseudocode:
- *		Begin
- *			declare variables
- *			loop through linked list
- *				find fourth root
- *				print table of value sqrt cbrt and fourth root
- *			endloop
- *		End
- ***************************************************************************/
-
-void print_out(Node *first, FILE *output){
-	Node *temp;
-	for(temp = first;temp != NULL; temp = temp->next){
-    // Perform Print of your data type here
-    printf("data: %15d\tnext: %p\n",*(int *)temp->value,temp->next);
-	}
-}	
-
-/****************************************************************************
  *	Function Title: clear_linked_list()
  *
  *	Input:none
@@ -189,8 +161,53 @@ void clear_linked_list(Node *first){// Begin
 			break;															 //				leave loop
 		}																			 //			endif
 	}																				 //		endloop
-}																					//	End
+}																		// End
 
+/*******************************************************************************
+* Function Title: length
+* Summary: this finds how many nodes there are in the linked list
+*
+* Inputs:
+* 	Node *first: the head of the linked list.
+* Outputs:
+* 	int: how many nodes there are in the list
+*******************************************************************************/
+int length(Node *first){
+  Node *itr;
+	int count = 0;
+  for(itr=first; itr!=NULL; itr = itr->next){
+		++count;
+  }
+  return count;
+}
+
+/****************************************************************************
+ *	Function Title: print_out()
+ *	Summary: This function just prints out the contents of the linked list. 
+ *					 In particular this includes the square root, cube root and fourth 
+ *					 root as well. The behavior can be modified. 
+ *
+ *	Input: first, which points to the front of the linked list
+ *		   ARG2 which points to the document being printed to
+ *	Output:none
+ ****************************************************************************
+ *	Pseudocode:
+ *		Begin
+ *			declare variables
+ *			loop through linked list
+ *				find fourth root
+ *				print table of value sqrt cbrt and fourth root
+ *			endloop
+ *		End
+ ***************************************************************************/
+
+void print_out(Node *first, FILE *output){
+	Node *temp;
+	for(temp = first;temp != NULL; temp = temp->next){
+    // Perform Print of your data type here
+    printf("data: %15d\tnext: %p\n",*(int *)temp->value,temp->next);
+	}
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -335,15 +352,33 @@ int compare_string(const void* left, const void* right){
 
 /*******************************************************************************
 * Function Title: compare_complex
-* Summary:
+* Summary: This function just compares the magnitude of the complex numbers
 *
 * Inputs:
+* 	const void* left: the left side of the comparison
+* 	const void* right: the right side of the comparison
 * Outputs:
+* 	int: the results of the comparison
 *
 * Compile Instructions:
 ********************************************************************************
 * Pseudocode
 *   Begin
-*
+*			create variables
+*			calculate magnitude of complex numbers 
+*			perform comparison
 *   End
 *******************************************************************************/
+int compare_complex(const void *left, const void *right){
+	double complex c_left = *(double complex *) left;
+  double complex c_right = *(double complex *) right;
+  double l1 = creal(c_left);
+  double l2 = cimag(c_left);
+  double r1 = creal(c_right);
+  double r2 = cimag(c_right);
+  double left_r = sqrt(l1+l2);
+  double right_r = sqrt(r1+r2);
+  if(left_r > right_r) return 1;
+  else if (left_r < right_r) return - 1;
+  else return 0;
+}

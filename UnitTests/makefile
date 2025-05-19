@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Wall -I/opt/homebrew/include 
 LDFLAGS = -L/opt/homebrew/lib -lcunit
 TARGET = unit_test
-SRC = unit_test.c
+SRC = unit_test.c ./../LinkedList.c
 
 # Selects the interface: basic, console, or automated
 INTERFACE ?= basic 
